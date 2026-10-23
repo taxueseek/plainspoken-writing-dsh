@@ -1,6 +1,6 @@
 {
   "name": "plainspoken-writing-dsh",
-  "version": "0.1.0",
+  "version": "1.9.0",
   "type": "module",
   "description": "DeepSeek Harness (DSH) 白描写作协作模式插件：AI 味检测、机械预清理、改写质检与工作区规则注入",
   "main": "./dist/index.js",
