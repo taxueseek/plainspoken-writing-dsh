@@ -42,6 +42,15 @@ function createSchemaBuilder() {
       this.meta.volatile = true;
       return this;
     }
+    // Cordis 用 standard-schema 接口校验配置；没有宿主 schemastery 时回退到这个
+    // 最小实现，值原样透传，默认值由 apply() 里的 unwrapConfigValue 处理。
+    get '~standard'() {
+      return {
+        version: 1,
+        vendor: 'plainspoken-writing-dsh',
+        validate: (value: any) => ({ value: value ?? {} }),
+      };
+    }
     toJSON() {
       return this.meta;
     }
