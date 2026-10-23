@@ -1,0 +1,70 @@
+# Plainspoken Writing（白描）DSH 写作协作模式插件
+#
+# 预设「白描写作」用一个干净的人格底座接管系统提示词，挂载：
+# - read / write / edit / glob / grep（本地文档读写与查找）
+# - plainspoken_analyze / plainspoken_rewrite / plainspoken_validate（AI 味检测与质检）
+# - 长文压缩
+#
+# 默认不修改宿主当前默认预设；安装后在 DSH 的预设选择器里手动选「白描写作」。
+# 「强制纯净工具面」默认关闭；开启后隐藏从全局继承的工具，只留本预设自带的工具。
+
+- insert:
+    # 1. 宿主侧配置与提示词注入器
+    - id: plainspoken-brick-injector
+      name: 'plainspoken-writing-dsh'
+      config:
+        activePreset: writer
+        includeBaseProtocol: true
+        customPromptOverride: ''
+        workspacePromptMode: off
+        customPromptBehavior: append
+        workspaceDocsMaxBytes: 65536
+        workspaceDocsIncludeAncestors: false
+        enforceToolSurface: false
+        enginePath: ''
+        showDimensions: 5
+
+    # 2. 主预设：白描写作（在预设选择器里手动选择）
+    - id: preset-plainspoken
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: plainspoken
+        name: 白描写作
+        description: 白描 · AI 味检测与改写。默认只诊断，确认后按直陈白描改写；挂载本地读写、查找与白描检测工具。
+        order: 1
+        plugins:
+          - id: persona
+            name: '@deepseek-ai/dsh-persona'
+            config:
+              prefix: '{{plainspoken_brick}}'
+              complete: true
+              includeRuntimeContext: false
+          - id: tool-surface
+            name: 'plainspoken-writing-dsh/tool-surface'
+          - id: plainspoken-tools
+            name: 'plainspoken-writing-dsh/tools'
+          - id: pure-fs
+            name: cordis:group
+            group: true
+            isolate:
+              fs: true
+              attachments: true
+            config:
+              - id: fs-local
+                name: '@deepseek-ai/dsh-fs-local'
+              - id: tool-fs
+                name: '@deepseek-ai/dsh-tool-fs'
+              - id: fs-search
+                name: '@deepseek-ai/dsh-tool-fs-search'
+                config:
+                  sampleOverCapGlobResults: false
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+              - id: command-compact
+                name: '@deepseek-ai/dsh-command-compact'
