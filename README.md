@@ -23,16 +23,16 @@
 本地开发：
 
 ```bash
-cd /Users/taxuexunxian/Documents/GPT/plainspoken-writing-dsh
+cd /path/to/plainspoken-writing-dsh
 npm run build
 npm test
-dsh plugin --profile web add /Users/taxuexunxian/Documents/GPT/plainspoken-writing-dsh
+dsh plugin --profile web add /path/to/plainspoken-writing-dsh
 ```
 
 没有全局 `dsh` CLI 时用：
 
 ```bash
-npx @deepseek-ai/dsh plugin --profile web add /Users/taxuexunxian/Documents/GPT/plainspoken-writing-dsh
+npx @deepseek-ai/dsh plugin --profile web add /path/to/plainspoken-writing-dsh
 ```
 
 安装后重启 DSH，在预设选择器里选 **白描写作**。插件不会修改宿主的默认预设。

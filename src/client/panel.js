@@ -123,7 +123,7 @@ function PlainspokenPanel(props) {
         'Python 引擎目录（留空用插件内置 engine/）',
         h('input', {
           key: 'i', type: 'text', disabled, style: S.input, defaultValue: cfg.enginePath,
-          placeholder: '例如 /Users/you/Documents/GPT/plainspoken-writing',
+          placeholder: '例如 /path/to/plainspoken-writing',
           onBlur: (e) => props.set('enginePath', e.target.value.trim()),
         }),
       ]),
