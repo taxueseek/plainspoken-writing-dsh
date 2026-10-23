@@ -143,12 +143,18 @@ export function apply(ctx     )       {
     },
     output: {
       schema: { type: 'object', additionalProperties: true },
-      render: (_args     , value     ) => {
+      render: (args     , value     ) => {
         const rewrite = value?.rewrite || {};
         const analysis = value?.analysis || {};
+        const mode = args?.mode || 'auto';
+        const status = rewrite.changed
+          ? '机械预清理：已改动'
+          : mode === 'question'
+            ? '只输出追问：未改动原文'
+            : '机械预清理：没有可安全删除的套话，未改动原文';
         const lines = [
           `浓度：${analysis.concentration_label || analysis.concentration || '未知'}（${analysis.concentration_score ?? '?'}）`,
-          rewrite.changed ? '机械预清理：已改动' : '机械预清理：没有可安全删除的套话，未改动原文',
+          status,
         ];
         if (Array.isArray(rewrite.changes) && rewrite.changes.length) {
           lines.push(`处理说明：${rewrite.changes.slice(0, 4).join('；')}`);
